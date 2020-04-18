@@ -59,8 +59,9 @@ class DataLoader(object):
 
 		# 1980, 1981, 1982, ...
 		yearcol = rows[0]
-		# temp: [ [jan1980, jan1981, ...], [feb1980, feb1981, ...],
-		# ..., [dec1980, dec1981] ]
+		# [ [temp(jan1980), temp(jan1981), ...],
+		#   [temp(feb1980), temp(feb1981), ...],
+		#   [..., temp(dec1980), temp(dec1981)] ]
 		monthcols = rows[1:13]
 		
 		for y in yearcol:
