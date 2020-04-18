@@ -2,8 +2,8 @@
 git repo for atm320 climate change project
 
 ## data sources
-* local temperature data (GHCND:USC00307633):
-https://www.ncei.noaa.gov/orders/cdo/2116917.csv
+* local temperature data (GHCND:USW00014735):
+https://www.ncei.noaa.gov/orders/cdo/2116933.csv
 
 * global temperature data (NASA):
 https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv
