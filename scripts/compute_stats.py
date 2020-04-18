@@ -1,4 +1,5 @@
 # compute basic stats for local-temp, global-temp, and soi
+from mako.template import Template
 import numpy as np
 from tools import DataLoader
 
@@ -9,12 +10,33 @@ local_temp = np.transpose(data['local'])[2]
 global_temp = np.transpose(data['global'])[2]
 soi = np.transpose(data['soi'])[2]
 
-msg = '''{title}:
-mean: {mean}
-stddev: {stddev}
-max: {max}
-min: {min}
+msg_template = Template(
+'''${title}:
+mean: ${mean}
+stddev: ${stddev}
+max: ${max}
+min: ${min}
 '''
+)
+
+temp_table_template = Template(
+'''${title}:
+$T_{avg} \\textrm{ } (^{\circ} \\textrm{F})$ &
+$\sigma T \\textrm{ } (^{\circ} \\textrm{F})$ &
+$T_{max} \\textrm{ } (^{\circ} \\textrm{F})$ &
+$T_{min} \\textrm{ } (^{\circ} \\textrm{F})$ \\\\ %%
+\hline
+${mean} & ${stddev} & ${max} & ${min} \\\\ %%
+'''
+)
+
+soi_table_template = Template(
+'''${title}:
+avg & $\sigma$ & max & min \\\\ %%
+\hline
+${mean} & ${stddev} & ${max} & ${min} \\\\ %%
+'''
+)
 	
 data_40_years = {
 	'duration': 'last 40 years',
@@ -39,14 +61,14 @@ data_last_20_years = {
 
 datasets = [data_40_years, data_first_20_years, data_last_20_years]
 
-def print_stats(datacol, msgtitle=''):
+def print_stats(datacol, msgtitle='', template=msg_template):
 	mean = round(np.mean(datacol), 3)
 	stddev = round(np.std(datacol), 3)
-	maxval = np.max(datacol)
-	minval = np.min(datacol)
+	maxval = round(np.max(datacol), 3)
+	minval = round(np.min(datacol), 3)
 
 	print(
-		msg.format(
+		template.render(
 			title=msgtitle,
 			mean=mean,
 			stddev=stddev,
@@ -60,6 +82,10 @@ def print_all_stats():
 		print(data['duration'])
 		print('-'*20)
 		for k in ['local-temp', 'global-temp', 'soi']:
-			print_stats(data[k], k)
+			print_stats(
+				datacol=data[k],
+				msgtitle=k,
+				template=temp_table_template
+			)
 
 print_all_stats()
