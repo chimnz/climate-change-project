@@ -94,14 +94,14 @@ class DataLoader(object):
 		# year, month, temp
 		return np.array([year, month, temp])
 
-	def load(self, unpack=True):
-		# [[year], [month], [temp]]
+	def load(self, unpack=False):
+		# 3 arrays: year, month, temp
 		local_temp = self.local_temp()
 		global_temp = self.global_temp()
 		soi = self.soi()
 
 		if unpack == False:
-			# [year, month, temp]
+			# 1 array: [year month temp]
 			local_temp = np.transpose(local_temp)
 			global_temp = np.transpose(global_temp)
 			soi = np.transpose(soi)
