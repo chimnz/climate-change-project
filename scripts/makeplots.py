@@ -5,28 +5,42 @@ from tools import DataLoader
 dl = DataLoader()
 data = dl.load(unpack=True)
 
-localdata = data['local']
-globaldata = data['global']
-soidata =  data['soi']
+year, month, local_temp = data['local']
+global_temp = data['global'][2]
+soi =  data['soi'][2]
+
+t = np.array(list(set(year)))  # 1980, 1981, ..., 2019
+
+def year_wise_average(a):
+	'''Take year-wise average of local temperature by converting
+	1D (480,) temp array into (40, 12) array, then taking the average
+	of this new array along axis 1 resulting in (40,) array.'''
+	return np.mean(a.reshape(-1, 12), axis=1)
+
+# save original month-wise
+m_local_temp = local_temp
+m_global_temp = global_temp
+m_soi =soi
+
+# convert all data to year-wise averages
+local_temp = year_wise_average(local_temp)
+global_temp = year_wise_average(global_temp)
+soi = year_wise_average(soi)
 
 # set figure size
 plt.figure(figsize=(10,5))
-
 
 # fits
 # ---------------------------------------------------------
 ## local vs. time
 ### scatter data points
-year, month, temp = localdata
-t = np.array(list(set(year)))  # 1980, 1981, ..., 2019
-temp = np.mean(temp.reshape(-1, 12), axis=1)  # year-wise average
-plt.scatter(t, temp, marker='.', c='black')
+plt.scatter(t, local_temp, marker='.', c='black')
 ### label axes and title graph
 plt.title('Local Temperature Trend Over Last 40 Years')
 plt.xlabel('Year')
 plt.ylabel('Temperature ($^{\circ}$ C)')
 ### plot best fit line
-m, b = np.polyfit(t, temp, deg=1)
+m, b = np.polyfit(t, local_temp, deg=1)
 plt.plot(t, m*t+b, c='red')
 ### output plot to png
 plt.savefig('../plots/fits/local.png')
@@ -34,20 +48,16 @@ plt.savefig('../plots/fits/local.png')
 plt.clf()
 # ---------------------------------------------------------
 ## global vs. time
-temp = globaldata[2]
-temp = np.mean(temp.reshape(-1, 12), axis=1)
-plt.scatter(t, temp, marker='.', c='black')
+plt.scatter(t, global_temp, marker='.', c='black')
 plt.title('Global Temperature Trend Over Last 40 Years')
 plt.xlabel('Year')
 plt.ylabel('Temperature Anomaly ($^{\circ}$ C)')
-m, b = np.polyfit(t, temp, deg=1)
+m, b = np.polyfit(t, global_temp, deg=1)
 plt.plot(t, m*t+b, c='green')
 plt.savefig('../plots/fits/global.png')
 plt.clf()
 # ---------------------------------------------------------
 ## soi vs. time
-soi = soidata[2]
-soi = np.mean(soi.reshape(-1, 12), axis=1)
 plt.scatter(t, soi, marker='.', c='black')
 plt.title('Southern Oscillation Index Trend Over Last 40 Years')
 plt.ylabel('SOI')
@@ -62,8 +72,6 @@ plt.clf()
 # compare
 # ---------------------------------------------------------
 ## local temp vs. global temp (a)
-local_temp = localdata[2]
-global_temp = globaldata[2]
 plt.scatter(global_temp, local_temp, marker='.', c='black')
 plt.title('Local Temperature vs. Global Temperature Anomaly')
 plt.ylabel('Local Temperature ($^{\circ}$ C)')
@@ -74,7 +82,6 @@ plt.savefig('../plots/compare/local_vs_global.png')
 plt.clf()
 # ---------------------------------------------------------
 ## local temp vs. soi
-soi = soidata[2]
 plt.scatter(soi, local_temp, marker='.', c='black')
 plt.title('Local Temperature vs. Global Temperature Anomaly')
 plt.ylabel('Local Temperature ($^{\circ}$ C)')
@@ -90,7 +97,7 @@ plt.clf()
 # ---------------------------------------------------------
 ## local temp
 nbins = 100
-plt.hist(local_temp, nbins, color='red')
+plt.hist(m_local_temp, nbins, color='red')
 plt.title('Local Temperature Histogram')
 plt.xlabel('Temperature ($^{\circ}$ C)')
 plt.ylabel('Occurences')
@@ -98,7 +105,7 @@ plt.savefig('../plots/histogram/local.png')
 plt.clf()
 # ---------------------------------------------------------
 ## global temp
-plt.hist(global_temp, nbins, color='green')
+plt.hist(m_global_temp, nbins, color='green')
 plt.title('Global Temperature Histogram')
 plt.xlabel('Temperature Anomaly ($^{\circ}$ C)')
 plt.ylabel('Occurences')
@@ -106,7 +113,7 @@ plt.savefig('../plots/histogram/global.png')
 plt.clf()
 # ---------------------------------------------------------
 ## soi
-plt.hist(soi, nbins, color='purple')
+plt.hist(m_soi, nbins, color='purple')
 plt.title('Southern Oscillation Index Histogram')
 plt.xlabel('SOI')
 plt.ylabel('Occurences')
