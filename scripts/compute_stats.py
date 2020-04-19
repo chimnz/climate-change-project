@@ -2,14 +2,17 @@
 from mako.template import Template
 import numpy as np
 from tools import DataLoader
+import sys
 
 dl = DataLoader()
-data = dl.load()
+data = dl.load(unpack=True)
 
-local_temp = np.transpose(data['local'])[2]
-global_temp = np.transpose(data['global'])[2]
-soi = np.transpose(data['soi'])[2]
+local_temp = data['local'][2]
+global_temp = data['global'][2]
+soi = data['soi'][2]
 
+# output templates
+# ---------------------------------------------------------
 msg_template = Template(
 '''${title}:
 mean: ${mean}
@@ -18,25 +21,24 @@ max: ${max}
 min: ${min}
 '''
 )
-
-temp_table_template = Template(
+celsius_table_template = Template(
 '''${title}:
-$T_{avg} \\textrm{ } (^{\circ} \\textrm{F})$ &
-$\sigma T \\textrm{ } (^{\circ} \\textrm{F})$ &
-$T_{max} \\textrm{ } (^{\circ} \\textrm{F})$ &
-$T_{min} \\textrm{ } (^{\circ} \\textrm{F})$ \\\\ %%
+$T_{avg} \\textrm{ } (^{\circ} \\textrm{C})$ &
+$\sigma T \\textrm{ } (^{\circ} \\textrm{C})$ &
+$T_{max} \\textrm{ } (^{\circ} \\textrm{C})$ &
+$T_{min} \\textrm{ } (^{\circ} \\textrm{C})$ \\\\ %%
 \hline
 ${mean} & ${stddev} & ${max} & ${min} \\\\ %%
 '''
 )
-
-soi_table_template = Template(
+unitless_table_template = Template(
 '''${title}:
 avg & $\sigma$ & max & min \\\\ %%
 \hline
 ${mean} & ${stddev} & ${max} & ${min} \\\\ %%
 '''
 )
+# ---------------------------------------------------------
 	
 data_40_years = {
 	'duration': 'last 40 years',
@@ -77,7 +79,7 @@ def print_stats(datacol, msgtitle='', template=msg_template):
 		)
 	)
 
-def print_all_stats():
+def print_all_stats(output_template):
 	for data in datasets:
 		print(data['duration'])
 		print('-'*20)
@@ -85,7 +87,12 @@ def print_all_stats():
 			print_stats(
 				datacol=data[k],
 				msgtitle=k,
-				template=temp_table_template
+				template=output_template
 			)
 
-print_all_stats()
+if sys.argv[1] == 'unitless':
+	output_template = unitless_table_template
+else:
+	output_template = celsius_table_template
+
+print_all_stats(output_template)
