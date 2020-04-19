@@ -61,7 +61,7 @@ data_last_20_years = {
 	'soi': soi[20:]
 }
 
-datasets = [data_40_years, data_first_20_years, data_last_20_years]
+datasets = [data_first_20_years, data_last_20_years, data_40_years]
 
 def print_stats(datacol, msgtitle='', template=msg_template):
 	mean = round(np.mean(datacol), 2)
@@ -82,7 +82,7 @@ def print_stats(datacol, msgtitle='', template=msg_template):
 def print_all_stats(output_template):
 	for data in datasets:
 		print(data['duration'])
-		print('-'*20)
+		print('-'*80)
 		for k in ['local-temp', 'global-temp', 'soi']:
 			print_stats(
 				datacol=data[k],
