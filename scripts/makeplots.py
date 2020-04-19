@@ -73,6 +73,7 @@ plt.plot(global_temp, m*global_temp+b)
 plt.savefig('../plots/compare/local_vs_global.png')
 plt.clf()
 # ---------------------------------------------------------
+## local temp vs. soi
 soi = soidata[2]
 plt.scatter(soi, local_temp, marker='.', c='black')
 plt.title('Local Temperature vs. Global Temperature Anomaly')
@@ -81,5 +82,34 @@ plt.xlabel('SOI')
 m, b = np.polyfit(soi, local_temp, deg=1)
 plt.plot(soi, m*soi+b)
 plt.savefig('../plots/compare/local_vs_soi.png')
+plt.clf()
+# ---------------------------------------------------------
+
+
+# historgram
+# ---------------------------------------------------------
+## local temp
+nbins = 100
+plt.hist(local_temp, nbins, color='red')
+plt.title('Local Temperature Histogram')
+plt.xlabel('Temperature ($^{\circ}$ C)')
+plt.ylabel('Occurences')
+plt.savefig('../plots/histogram/local.png')
+plt.clf()
+# ---------------------------------------------------------
+## global temp
+plt.hist(global_temp, nbins, color='green')
+plt.title('Global Temperature Histogram')
+plt.xlabel('Temperature Anomaly ($^{\circ}$ C)')
+plt.ylabel('Occurences')
+plt.savefig('../plots/histogram/global.png')
+plt.clf()
+# ---------------------------------------------------------
+## soi
+plt.hist(soi, nbins, color='purple')
+plt.title('Southern Oscillation Index Histogram')
+plt.xlabel('SOI')
+plt.ylabel('Occurences')
+plt.savefig('../plots/histogram/soi.png')
 plt.clf()
 # ---------------------------------------------------------
