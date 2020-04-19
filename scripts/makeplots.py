@@ -13,7 +13,7 @@ t = np.array(list(set(year)))  # 1980, 1981, ..., 2019
 
 def year_wise_average(a):
 	'''Take year-wise average of local temperature by converting
-	1D (480,) temp array into (40, 12) array, then taking the average
+	1D (480,) array into (40, 12) array, then taking the average
 	of this new array along axis 1 resulting in (40,) array.'''
 	return np.mean(a.reshape(-1, 12), axis=1)
 
