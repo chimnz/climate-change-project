@@ -28,7 +28,7 @@
 
 \noindent\makebox[\linewidth]{\rule{16.51cm}{0.4pt}}
 
-\section*{Data}
+\section*{Tables}
 
 \subsection*{1980 - 1999}
 Local temperature:
@@ -126,6 +126,34 @@ SOI index:
 \end{tabular}
 \end{center}
 
-\doublespacing
+\section*{Correlation Coefficient}
+The correlation coefficient is a quantification of the
+strength of the linear relationship between two variables.
+Correlations of -1 or +1 imply an exact linear relationship,
+while 0 implies no correlation.
+The Pearson correlation coefficient is calculated using
+the equation \ref{eq1}.
+
+\begin{equation}\label{eq1}
+	r = \frac{\sum (x - \overline{x}) (y - \overline{y})}
+        {\sqrt{\sum (x - \overline{x})^2 \sum (y - \overline{y})^2}}
+\end{equation}
+
+The statistical significance of the correlation coefficient can be
+interpreted using the p-value method.
+The p-value $P$ is calculated using a t-distribution with
+$n - 2$ degrees of freedom as shown in equation \ref{eq2}.
+
+\begin{equation}\label{eq2}
+	t = \frac{r \sqrt{n-2}}{\sqrt{1 - r^2}}
+\end{equation}
+
+We use $\alpha = 0.05$ as the threshold significance level.
+\begin{itemize}
+	\item If $P < \alpha$, the variables \textit{are}
+	linear because $r$ \textit{is} sufficiently different from zero.
+	\item If $P > \alpha$, the variables \textit{are not}
+	linear because $r$ \textit{is not} sufficiently different from zero.
+\end{itemize}
 
 \end{document}
