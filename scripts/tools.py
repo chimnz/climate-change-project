@@ -1,6 +1,12 @@
 import numpy as np
 import re, csv
 
+def year_wise_average(a):
+	'''Take year-wise average of local temperature by converting
+	1D (480,) array into (40, 12) array, then taking the average
+	of this new array along axis 1 resulting in (40,) array.'''
+	return np.mean(a.reshape(-1, 12), axis=1)
+
 class DataLoader(object):
 	def __init__(self):
 		self.local_temp_filepath = '../data/local-temp.csv'

@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tools import DataLoader
+from tools import DataLoader, year_wise_average
 
 dl = DataLoader()
 data = dl.load(unpack=True)
@@ -10,12 +10,6 @@ global_temp = data['global'][2]
 soi =  data['soi'][2]
 
 t = np.array(list(set(year)))  # 1980, 1981, ..., 2019
-
-def year_wise_average(a):
-	'''Take year-wise average of local temperature by converting
-	1D (480,) array into (40, 12) array, then taking the average
-	of this new array along axis 1 resulting in (40,) array.'''
-	return np.mean(a.reshape(-1, 12), axis=1)
 
 # save original month-wise
 m_local_temp = local_temp
