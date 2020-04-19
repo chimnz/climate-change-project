@@ -64,10 +64,10 @@ data_last_20_years = {
 datasets = [data_40_years, data_first_20_years, data_last_20_years]
 
 def print_stats(datacol, msgtitle='', template=msg_template):
-	mean = round(np.mean(datacol), 3)
-	stddev = round(np.std(datacol), 3)
-	maxval = round(np.max(datacol), 3)
-	minval = round(np.min(datacol), 3)
+	mean = round(np.mean(datacol), 2)
+	stddev = round(np.std(datacol), 2)
+	maxval = round(np.max(datacol), 2)
+	minval = round(np.min(datacol), 2)
 
 	print(
 		template.render(
