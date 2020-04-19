@@ -12,6 +12,7 @@ soidata =  data['soi']
 # set figure size
 plt.figure(figsize=(10,5))
 
+
 # fits
 # ---------------------------------------------------------
 ## local vs. time
@@ -55,3 +56,30 @@ m, b = np.polyfit(t, soi, deg=1)
 plt.plot(t, m*t+b, c='purple')
 plt.savefig('../plots/fits/soi.png')
 plt.clf()
+# ---------------------------------------------------------
+
+
+# compare
+# ---------------------------------------------------------
+## local temp vs. global temp (a)
+local_temp = localdata[2]
+global_temp = globaldata[2]
+plt.scatter(global_temp, local_temp, marker='.', c='black')
+plt.title('Local Temperature vs. Global Temperature Anomaly')
+plt.ylabel('Local Temperature ($^{\circ}$ C)')
+plt.xlabel('Global Temperature Anomaly ($^{\circ}$ C)')
+m, b = np.polyfit(global_temp, local_temp, deg=1)
+plt.plot(global_temp, m*global_temp+b)
+plt.savefig('../plots/compare/local_vs_global.png')
+plt.clf()
+# ---------------------------------------------------------
+soi = soidata[2]
+plt.scatter(soi, local_temp, marker='.', c='black')
+plt.title('Local Temperature vs. Global Temperature Anomaly')
+plt.ylabel('Local Temperature ($^{\circ}$ C)')
+plt.xlabel('SOI')
+m, b = np.polyfit(soi, local_temp, deg=1)
+plt.plot(soi, m*soi+b)
+plt.savefig('../plots/compare/local_vs_soi.png')
+plt.clf()
+# ---------------------------------------------------------
