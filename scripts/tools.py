@@ -26,8 +26,7 @@ class DataLoader(object):
 				temp.append(t)
 
 		# year, month, temp
-		a = np.array([year, month, temp])
-		return np.transpose(a)
+		return np.array([year, month, temp])
 
 	def __linearize_month_data_cols(self, yearcol, monthcols):
 		'''Linerarize data stored in month columns (global and soi).'''
@@ -46,7 +45,6 @@ class DataLoader(object):
 				years_processed += 1
 		# [jan1980, feb1980, ..., dec2019]
 		return temp
-
 
 	def global_temp(self):
 		year, month = [], []
@@ -72,8 +70,7 @@ class DataLoader(object):
 		temp = self.__linearize_month_data_cols(yearcol, monthcols)
 
 		# year, month, temp
-		a = np.array([year, month, temp])
-		return np.transpose(a)
+		return np.array([year, month, temp])
 
 	def soi(self):
 		# same format as global temp
@@ -95,13 +92,22 @@ class DataLoader(object):
 		temp = self.__linearize_month_data_cols(yearcol, monthcols)
 
 		# year, month, temp
-		a = np.array([year, month, temp])
-		return np.transpose(a)
+		return np.array([year, month, temp])
 
+	def load(self, unpack=True):
+		# [[year], [month], [temp]]
+		local_temp = self.local_temp()
+		global_temp = self.global_temp()
+		soi = self.soi()
 
-	def load(self):
+		if unpack == False:
+			# [year, month, temp]
+			local_temp = np.transpose(local_temp)
+			global_temp = np.transpose(global_temp)
+			soi = np.transpose(soi)
+
 		return {
-			'local': self.local_temp(),
-			'global': self.global_temp(),
-			'soi': self.soi()
+			'local': local_temp,
+			'global': global_temp,
+			'soi': soi
 		}
