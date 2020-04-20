@@ -46,7 +46,7 @@ class DataLoader(object):
 
 			monthindex += 1
 			if monthindex == 12:
-				monthindex = 0  # return to first columns
+				monthindex = 0  # return to first column
 				yearindex += 1  # move to next row
 				years_processed += 1
 		# [jan1980, feb1980, ..., dec2019]
