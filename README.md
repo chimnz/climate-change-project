@@ -1,6 +1,5 @@
 # climate-change-project
-student ID: 110702584 \
-git repo for atm320 climate change project
+SBU ATM 320 Spring 2020
 
 ## data sources
 * local temperature [Celsius] (GHCND:USW00014735):
